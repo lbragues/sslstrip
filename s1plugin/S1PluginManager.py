@@ -16,7 +16,7 @@ WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.
 
-http://sizeonedev.wordpress.com/2011/12/04/sslstrip-mod-t…upport-plugins/
+http://sizeonedev.wordpress.com/
 
 """
 import os

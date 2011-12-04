@@ -130,8 +130,13 @@ class ServerConnection(HTTPClient):
         if (self.contentLength != None):
             self.client.setHeader('Content-Length', len(data))
         
-        self.client.write(data)
-        self.shutdown()
+        #due to some bug this is sometimes called after the client already closed the connection
+        #supid fix just add try
+        try:
+            self.client.write(data)
+            self.shutdown()
+        except RuntimeError:
+            logging.error("BUG write was called after client closed connection!")
 
     def replaceSecureLinks(self, data):
         iterator = re.finditer(ServerConnection.urlExpression, data)

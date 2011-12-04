@@ -102,6 +102,14 @@ def main(argv):
                 
     print "\nsslstrip " + gVersion + " by Moxie Marlinspike running..."
 
+	# ------ SizeOne Mod ---------------------------------------
+	# import The event manager class if detected
+    if(os.path.exists("s1plugin")):
+        from s1plugin.S1StrippingProxy import S1StrippingProxy
+        #create replace normal classes
+        strippingFactory.protocol = S1StrippingProxy
+    # ----------------------------------------------------------
+
     reactor.run()
 
 if __name__ == '__main__':

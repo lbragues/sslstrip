@@ -1,3 +1,76 @@
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+
+Please if you use this keep all the credits :)
+
+This is my modification of sslstrip to support plugins.
+setup.py was removed so you cant install directly this version
+use it only from the folder
+
+I created this to help me on some tests I did, it got a lot easier. This code isn't perfect, far from it...
+For someone that hasn't much experience in python this was made in record time... don't be too hard on the errors
+it might have.
+
+Installing:
+	* Do it like you where installing normaly sslstrip
+	* Don't use setup.py wont work. This is a experimental version.
+	
+Running:
+	* Run like sslstrip
+	
+############ Plugin Info ####################
+File structure:
+	s1plugin
+	 |____ plugins 				(All plugins are here)
+	 |		|____ _OSFinder		(Plugin folders, each plugin has it's own folder)
+	 |
+	 |____ 	*					(All the other files, you don't need to change anything)
+								It's easy, so if you know what you are doing you shouldn't have a problem understanding
+								if you can't then don't change anything :)
+About plugins folder:
+	* A plugin is only loaded if it's folder HAS the file __init__.py
+	* Deactivating a plugin Rename or remove "__init__.py"
+	* To be loaded a Plugin must have a file named S1Plugin.py with a class named S1Plugin respecting the rules
+	
+Plugin class:
+	* EventSender it's an empty plugin, you want to create a new one use that and remove what you don't need
+	* What can you do and listen: (I think I don't need to explain)
+		* onResolveHost(self,client,host,result)
+		* onHostResolvedSuccess(self,client,address)
+		* onHostResolvedError(self,client,error)
+		* onCleanHeaders(self,client,headers,result)
+		* onClientConnection(self,host,headers,client,path,postData,url)
+		* onSendSpoofedFaviconResponse(self,client,icon_path)
+		* onProxy(self,client,host, method, path, postData, headers, port, ssl)
+		* hijackConnection(self,client,url,clientConnection)
+		* onVisitUrl(self,client,url,postData)
+		* injectContent(self,client,contentType,data)
+	* Store and read values on disk (settings.db) -> sqlite3
+		* storeValue("key1","ohhyeah")
+		* readValue("key1")
+	* Communicate between plugins
+		* View _OSFinder and UrlLogger plugins for reference
+
+Modifications on sslstrip.py:
+Find this:
+	print "\nsslstrip " + gVersion + " by Moxie Marlinspike running..."
+Here:
+	# ------ SizeOne Mod ---------------------------------------
+	# import The event manager class if detected
+	if(os.path.exists("s1plugin")):
+    	from s1plugin.S1StrippingProxy import S1StrippingProxy
+    	#create replace normal classes
+    	strippingFactory.protocol = S1StrippingProxy
+	# ----------------------------------------------------------
+
+I think it's all I have to say for now
+
+More Info:
+	http://sizeonedev.wordpress.com/2011/12/04/sslstrip-mod-t…upport-plugins/
+
+####################################### Original README #########################################################
 sslstrip is a MITM tool that implements Moxie Marlinspike's SSL stripping 
 attacks.
 

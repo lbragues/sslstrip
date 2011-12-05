@@ -46,7 +46,8 @@ def usage():
     print "-l <port>, --listen=<port>        Port to listen on (default 10000)."
     print "-f , --favicon                    Substitute a lock favicon on secure requests."
     print "-k , --killsessions               Kill sessions in progress."
-    print "-h                                Print this help message."
+    print "-x , --s1plugin                   Activate s1plugin's."
+    print "-h , --help                       Print this help message."
     print ""
 
 def parseOptions(argv):
@@ -55,11 +56,12 @@ def parseOptions(argv):
     listenPort   = 10000
     spoofFavicon = False
     killSessions = False
+    loadPlugins  = False
     
     try:                                
-        opts, args = getopt.getopt(argv, "hw:l:psafk", 
+        opts, args = getopt.getopt(argv, "hw:l:psafkx", 
                                    ["help", "write=", "post", "ssl", "all", "listen=", 
-                                    "favicon", "killsessions"])
+                                    "favicon", "killsessions", "s1plugin"])
 
         for opt, arg in opts:
             if opt in ("-h", "--help"):
@@ -77,17 +79,19 @@ def parseOptions(argv):
                 listenPort = arg
             elif opt in ("-f", "--favicon"):
                 spoofFavicon = True
+            elif opt in ("-x", "--s1plugin"):
+                loadPlugins = True
             elif opt in ("-k", "--killsessions"):
                 killSessions = True
 
-        return (logFile, logLevel, listenPort, spoofFavicon, killSessions)
+        return (logFile, logLevel, listenPort, spoofFavicon, killSessions, loadPlugins)
                     
     except getopt.GetoptError:           
         usage()                          
         sys.exit(2)                         
 
 def main(argv):
-    (logFile, logLevel, listenPort, spoofFavicon, killSessions) = parseOptions(argv)
+    (logFile, logLevel, listenPort, spoofFavicon, killSessions, loadPlugins) = parseOptions(argv)
         
     logging.basicConfig(level=logLevel, format='%(asctime)s %(message)s',
                         filename=logFile, filemode='w')
@@ -104,7 +108,7 @@ def main(argv):
 
 	# ------ SizeOne Mod ---------------------------------------
 	# import The event manager class if detected
-    if(os.path.exists("s1plugin")):
+    if(os.path.exists("s1plugin") and loadPlugins):
         from s1plugin.S1StrippingProxy import S1StrippingProxy
         #create replace normal classes
         strippingFactory.protocol = S1StrippingProxy

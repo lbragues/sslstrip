@@ -18,7 +18,7 @@ Installing:
 	* Don't use setup.py wont work. This is a experimental version.
 	
 Running:
-	* Run like sslstrip
+	* To activate plugins add the -x or --s1plugin option in the command line
 	
 ############ Plugin Info ####################
 File structure:
@@ -54,12 +54,15 @@ Plugin class:
 		* View _OSFinder and UrlLogger plugins for reference
 
 Modifications on sslstrip.py:
+
+Argument stuff and...
+
 Find this:
 	print "\nsslstrip " + gVersion + " by Moxie Marlinspike running..."
 Here:
 	# ------ SizeOne Mod ---------------------------------------
 	# import The event manager class if detected
-	if(os.path.exists("s1plugin")):
+	if(os.path.exists("s1plugin") and loadPlugins):
     	from s1plugin.S1StrippingProxy import S1StrippingProxy
     	#create replace normal classes
     	strippingFactory.protocol = S1StrippingProxy
@@ -68,7 +71,7 @@ Here:
 I think it's all I have to say for now
 
 More Info:
-	http://sizeonedev.wordpress.com/2011/12/04/sslstrip-mod-t…upport-plugins/
+	http://sizeonedev.wordpress.com
 
 ####################################### Original README #########################################################
 sslstrip is a MITM tool that implements Moxie Marlinspike's SSL stripping 
